@@ -7,7 +7,7 @@
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
-            "js": ["hider.js"],
+            "js": ["app.js"],
             "run_at": "document_idle"
         }
     ]
