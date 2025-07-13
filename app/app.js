@@ -20,7 +20,7 @@ class App {
     }
 
     static infoMessage() {
-        console.info(`Shorts removed for your focus!\nTotal removed: ${this.hiddenCounter}`);
+        console.info(`Shorts removed for your focus!\nTotal removed in this session: ${this.hiddenCounter}`);
     }
 
     isYouTube() {
@@ -91,7 +91,7 @@ class App {
     }
 
     startObserving() {
-        const debouncedCallback = this.debounce(() => {
+        const debouncedCallback = this.debounce((mutationList, observer) => {
             this.removeShortsFromPage();
         }, 300);
 
