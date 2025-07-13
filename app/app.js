@@ -12,15 +12,16 @@ class App {
         this.window = window;
         this.document = window.document;
         this.redirecting = false;
-
-        if (!this.isYouTube()) return;
-
-        this.removeShortsFromPage();
-        this.startObserving();
     }
 
     static infoMessage() {
         console.info(`Shorts removed for your focus!\nTotal removed in this session: ${this.hiddenCounter}`);
+    }
+
+    init() {
+        if (!this.isYouTube()) return;
+        this.removeShortsFromPage();
+        this.startObserving();
     }
 
     isYouTube() {
@@ -116,5 +117,6 @@ class App {
 }
 
 if (window.location.host.includes("youtube.com")) {
-    new App(window);
+    const app = new App(window);
+    app.init();
 }
