@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "No More Shorts",
+    "version": "1.0",
+    "description": "Hides shorts automatically",
+    "permissions": ["activeTab"],
+    "content_scripts": [
+        {
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["hider.js"],
+            "run_at": "document_idle"
+        }
+    ]
+}
