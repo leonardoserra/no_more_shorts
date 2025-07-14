@@ -1,6 +1,6 @@
 # No More Shorts
 
-`"I love YouTube, but I can't stand the Shorts format." - Sasha Grey`  
+`"I like You(...Tube), but I like you more with no Shorts." - Your Crush`  
 
 **No More Shorts** is a Chrome extension that removes YouTube Shorts from the homepage, sidebar, and suggested feeds to help you stay focused.
 
