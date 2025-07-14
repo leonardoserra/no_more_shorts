@@ -2,10 +2,10 @@ class App {
     static hiddenCounter = 0;
 
     static selectors = {
-        homePageShort: "div [is-shorts]",
+        homePageShortContainer: "div [is-shorts]",
         shortsContainer: "#shorts-inner-container",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
-        singleShortSelector: "ytm-shorts-lockup-view-model, div [is-shorts], ytd-reel-video-renderer"
+        singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
 
     constructor(window) {
@@ -69,7 +69,7 @@ class App {
         try {
             const blocksToHide = this.document.body.querySelectorAll(
                 [
-                    App.selectors.homePageShort,
+                    App.selectors.homePageShortContainer,
                     App.selectors.shortsContainer,
                     App.selectors.suggestedShortsCarousel
                 ].join(',')
