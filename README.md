@@ -1,5 +1,7 @@
 # No More Shorts
 
+`I love YouTube, but I hate the Shorts. - Osho -`  
+
 **No More Shorts** is a Chrome extension that removes YouTube Shorts from the homepage, sidebar, and suggested feeds to help you stay focused.
 
 ---
