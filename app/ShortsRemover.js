@@ -69,6 +69,19 @@ export class ShortsRemover {
         return shortsSidebarElements;
     }
 
+    getShortsChipElement() {
+        const chipCollection = [];
+        this.document
+            .querySelectorAll('yt-chip-cloud-chip-renderer chip-shape button div')
+            .forEach(chip => {
+                if (chip.innerHTML.toLowerCase() == "shorts") {
+                    chipCollection.push(chip.closest('yt-chip-cloud-chip-renderer'));
+                }
+            });
+
+        return chipCollection;
+    }
+
     mergeElementsToRemove(...collections) {
         const elementsToRemove = [];
 
@@ -107,11 +120,18 @@ export class ShortsRemover {
                     ShortsRemover.selectors.resultsPageShortsContainer
                 ].join(',')
             );
-
             const shortsSidebarElements = this.getShortsSidebarElements();
             const chameleonShorts = this.getChameleonShorts();
+            const shortChipElement = this.getShortsChipElement();
+            
+            const collections = [
+                blocksToHide,
+                shortsSidebarElements, 
+                chameleonShorts, 
+                shortChipElement
+            ];
 
-            const elementsToRemove = this.mergeElementsToRemove(blocksToHide, shortsSidebarElements, chameleonShorts);
+            const elementsToRemove = this.mergeElementsToRemove(...collections);
 
             const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts);
 
@@ -129,7 +149,7 @@ export class ShortsRemover {
     startObserving() {
         const debouncedCallback = this.debounce((mutationList, observer) => {
             this.removeShortsFromPage();
-        }, 300);
+        }, 600);
 
         try {
             this.observer = new MutationObserver(debouncedCallback);
