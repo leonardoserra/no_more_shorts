@@ -13,7 +13,7 @@
     ],
     "web_accessible_resources": [
         {
-            "resources": ["hider.js"],
+            "resources": ["ShortsRemover.js"],
             "matches": ["*://*.youtube.com/*"]
         }
     ],

@@ -1,7 +1,7 @@
-export class Hider {
+export class ShortsRemover {
     static instance = null;
     static started = false;
-    static hiddenCounter = 0;
+    static removedCounter = 0;
 
     static selectors = {
         homePageShortContainer: "div [is-shorts]",
@@ -19,14 +19,18 @@ export class Hider {
     }
 
     static getInstance(window){
-        if (!Hider.instance){
-            Hider.instance = new Hider(window);
+        if (!ShortsRemover.instance){
+            ShortsRemover.instance = new ShortsRemover(window);
         }
-        return Hider.instance;
+        return ShortsRemover.instance;
     }
 
     static infoMessage() {
-        console.info(`Shorts removed for your focus!\nTotal removed in this session: ${this.hiddenCounter}`);
+        let message = `${this.removedCounter}`;
+
+        if (this.removedCounter > 1000) message += " (That's A LOT!)";
+
+        console.info(`Shorts removed for your focus!\nTotal removed in this session: ${message}`);
     }
 
     init() {
@@ -34,7 +38,7 @@ export class Hider {
         this.removeShortsFromPage();
         this.startObserving();
 
-        Hider.started = true;
+        ShortsRemover.started = true;
     }
 
     isYouTube() {
@@ -65,22 +69,22 @@ export class Hider {
         return shortsSidebarElements;
     }
 
-    mergeElementsToRemove(...args) {
+    mergeElementsToRemove(...collections) {
         const elementsToRemove = [];
 
-        args.forEach(collection => elementsToRemove.push(...collection));
+        collections.forEach(collection => elementsToRemove.push(...collection));
 
         return elementsToRemove;
     }
 
-    getShortsToDeleteCount() {
-        return this.document.body.querySelectorAll(Hider.selectors.singleShortSelector).length;
+    getShortsToRemoveCount(...others) {
+        return this.document.body.querySelectorAll(ShortsRemover.selectors.singleShortSelector).length + others.length;
     }
     
     getChameleonShorts(){
         const chameleonShorts = [];
 
-        this.document.querySelectorAll(Hider.selectors.chameleonShortsChildren)
+        this.document.querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
             .forEach(el => {
                 const chameleonShort = el.closest('ytd-video-renderer');
                 if (chameleonShort) {
@@ -97,10 +101,10 @@ export class Hider {
         try {
             const blocksToHide = this.document.body.querySelectorAll(
                 [
-                    Hider.selectors.homePageShortContainer,
-                    Hider.selectors.shortsContainer,
-                    Hider.selectors.suggestedShortsCarousel,
-                    Hider.selectors.resultsPageShortsContainer
+                    ShortsRemover.selectors.homePageShortContainer,
+                    ShortsRemover.selectors.shortsContainer,
+                    ShortsRemover.selectors.suggestedShortsCarousel,
+                    ShortsRemover.selectors.resultsPageShortsContainer
                 ].join(',')
             );
 
@@ -109,12 +113,12 @@ export class Hider {
 
             const elementsToRemove = this.mergeElementsToRemove(blocksToHide, shortsSidebarElements, chameleonShorts);
 
-            const removedCount = this.getShortsToDeleteCount();
+            const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts);
 
             if (elementsToRemove.length) {
                 elementsToRemove.forEach(el => el?.remove());
-                Hider.hiddenCounter += removedCount;
-                if (removedCount > 0) Hider.infoMessage();
+                ShortsRemover.removedCounter += individualShortsRemovedCount;
+                if (individualShortsRemovedCount > 0) ShortsRemover.infoMessage();
             }
 
         } catch (e) {
