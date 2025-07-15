@@ -3,6 +3,7 @@ class App {
 
     static selectors = {
         homePageShortContainer: "div [is-shorts]",
+        resultsPageShortsContainer: "grid-shelf-view-model",
         shortsContainer: "#shorts-inner-container",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
@@ -40,22 +41,22 @@ class App {
     }
 
     findShortsSidebarElements() {
-        let shortsNavbarElement = [];
+        let shortsNavbarElements = [];
         const entries = this.document.querySelectorAll('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');
 
         entries.forEach(entry => {
             if (entry.querySelector('a[title="Shorts"]')) {
-                shortsNavbarElement.push(entry);
+                shortsNavbarElements.push(entry);
             }
         });
 
-        return shortsNavbarElement;
+        return shortsNavbarElements;
     }
 
-    collectElementsToRemove(blocksToHide, shortsNavbarElement) {
+    collectElementsToRemove(blocksToHide, shortsNavbarElements) {
         return [
             ...(blocksToHide || []), 
-            ...(shortsNavbarElement || []) 
+            ...(shortsNavbarElements || []) 
         ];
     }
 
@@ -71,12 +72,13 @@ class App {
                 [
                     App.selectors.homePageShortContainer,
                     App.selectors.shortsContainer,
-                    App.selectors.suggestedShortsCarousel
+                    App.selectors.suggestedShortsCarousel,
+                    App.selectors.resultsPageShortsContainer
                 ].join(',')
             );
 
-            const shortsNavbarElement = this.findShortsSidebarElements();
-            const elementsToRemove = this.collectElementsToRemove(blocksToHide, shortsNavbarElement);
+            const shortsNavbarElements = this.findShortsSidebarElements();
+            const elementsToRemove = this.collectElementsToRemove(blocksToHide, shortsNavbarElements);
 
             const removedCount = this.getShortsToDeleteCount();
 
