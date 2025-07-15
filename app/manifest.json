@@ -3,12 +3,18 @@
     "name": "No More Shorts",
     "version": "1.0",
     "description": "Hides shorts automatically",
-    "permissions": ["activeTab"],
+    "permissions": ["activeTab", "scripting"],
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
             "js": ["app.js"],
             "run_at": "document_idle"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["hider.js"],
+            "matches": ["*://*.youtube.com/*"]
         }
     ],
     "icons": {
