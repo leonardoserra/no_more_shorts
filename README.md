@@ -17,7 +17,14 @@
 
 ## How It Works
 
-The extension injects a content script into YouTube pages. It searches for known Shorts-related elements and removes them from the DOM. It also observes the page for dynamic content changes using a `MutationObserver`, ensuring Shorts don't reappear. If the user navigates to a Shorts URL, it redirects them to the homepage.
+The extension injects a content script into YouTube pages. It searches for known Shorts-related elements and removes them from the DOM. It also observes the page for dynamic content changes using a `MutationObserver`, ensuring Shorts don't reappear. If the user navigates to a Shorts URL, it redirects them to the homepage.  
+  
+>Hint: You can open the browser console by pressing F12 and check if you are already been _de-shorted_!  
+  
+```console
+Shorts removed for your focus!
+Total removed in this session: 69
+```
 
 ---
 
@@ -31,6 +38,7 @@ The extension injects a content script into YouTube pages. It searches for known
 
    * `manifest.json`
    * `app.js`
+   * `hider.js`
 
 The extension will be loaded into Chrome immediately.
 
