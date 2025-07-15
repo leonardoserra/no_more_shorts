@@ -8,6 +8,7 @@ export class Hider {
         resultsPageShortsContainer: "grid-shelf-view-model",
         shortsContainer: "#shorts-inner-container",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
+        chameleonShortsChildren: 'a[href^="/shorts"], badge-shape[aria-label="Shorts"]',
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
 
@@ -51,28 +52,43 @@ export class Hider {
         }
     }
 
-    findShortsSidebarElements() {
-        let shortsNavbarElements = [];
+    getShortsSidebarElements() {
+        let shortsSidebarElements = [];
         const entries = this.document.querySelectorAll('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');
 
         entries.forEach(entry => {
             if (entry.querySelector('a[title="Shorts"]')) {
-                shortsNavbarElements.push(entry);
+                shortsSidebarElements.push(entry);
             }
         });
 
-        return shortsNavbarElements;
+        return shortsSidebarElements;
     }
 
-    collectElementsToRemove(blocksToHide, shortsNavbarElements) {
-        return [
-            ...(blocksToHide || []), 
-            ...(shortsNavbarElements || []) 
-        ];
+    mergeElementsToRemove(...args) {
+        const elementsToRemove = [];
+
+        args.forEach(collection => elementsToRemove.push(...collection));
+
+        return elementsToRemove;
     }
 
     getShortsToDeleteCount() {
         return this.document.body.querySelectorAll(Hider.selectors.singleShortSelector).length;
+    }
+    
+    getChameleonShorts(){
+        const chameleonShorts = [];
+
+        this.document.querySelectorAll(Hider.selectors.chameleonShortsChildren)
+            .forEach(el => {
+                const chameleonShort = el.closest('ytd-video-renderer');
+                if (chameleonShort) {
+                    chameleonShorts.push(chameleonShort);
+                }
+            });
+
+        return chameleonShorts;
     }
 
     removeShortsFromPage() {
@@ -88,8 +104,10 @@ export class Hider {
                 ].join(',')
             );
 
-            const shortsNavbarElements = this.findShortsSidebarElements();
-            const elementsToRemove = this.collectElementsToRemove(blocksToHide, shortsNavbarElements);
+            const shortsSidebarElements = this.getShortsSidebarElements();
+            const chameleonShorts = this.getChameleonShorts();
+
+            const elementsToRemove = this.mergeElementsToRemove(blocksToHide, shortsSidebarElements, chameleonShorts);
 
             const removedCount = this.getShortsToDeleteCount();
 
