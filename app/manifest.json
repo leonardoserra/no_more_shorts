@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "No More Shorts",
-    "version": "1.0",
+    "version": "1.2.5",
     "description": "Hides shorts automatically",
     "permissions": ["activeTab", "scripting"],
     "content_scripts": [
