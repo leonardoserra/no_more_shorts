@@ -6,7 +6,7 @@ export class ShortsRemover {
         resultsPageShortsContainer: "grid-shelf-view-model",
         shortsContainer: "#shorts-inner-container",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
-        chameleonShortsChildren: 'a[href^="/shorts"], badge-shape[aria-label="Shorts"]',
+        chameleonShortsChildren: 'badge-shape[aria-label="Shorts"]',
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
 
