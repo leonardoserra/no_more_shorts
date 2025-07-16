@@ -1,7 +1,5 @@
 export class ShortsRemover {
     static instance = null;
-    static started = false;
-    static removedCounter = 0;
 
     static selectors = {
         homePageShortContainer: "div [is-shorts]",
@@ -16,6 +14,8 @@ export class ShortsRemover {
         this.window = window;
         this.document = window.document;
         this.redirecting = false;
+        this.started = false;
+        this.removedCounter = 0;
     }
 
     static getInstance(window){
@@ -25,24 +25,24 @@ export class ShortsRemover {
         return ShortsRemover.instance;
     }
 
-    static infoMessage() {
-        let message = `${this.removedCounter}`;
-
-        if (this.removedCounter > 1000) message += " (That's A LOT!)";
-
-        console.info(`Shorts removed for your focus!\nTotal removed in this session: ${message}`);
-    }
-
     init() {
         if (!this.isYouTube()) return;
         this.removeShortsFromPage();
         this.startObserving();
 
-        ShortsRemover.started = true;
+        this.started = true;
     }
 
     isYouTube() {
         return this.document.location.host.includes("youtube.com");
+    }
+
+    infoMessage() {
+        let message = `${this.removedCounter}`;
+
+        if (this.removedCounter > 1000) message += " (That's A LOT!)";
+
+        console.info(`Shorts removed for your focus!\nTotal removed in this session: ${message}`);
     }
 
     redirectIfOnShortsPage() {
@@ -137,8 +137,8 @@ export class ShortsRemover {
 
             if (elementsToRemove.length) {
                 elementsToRemove.forEach(el => el?.remove());
-                ShortsRemover.removedCounter += individualShortsRemovedCount;
-                if (individualShortsRemovedCount > 0) ShortsRemover.infoMessage();
+                this.removedCounter += individualShortsRemovedCount;
+                if (individualShortsRemovedCount > 0) this.infoMessage();
             }
 
         } catch (e) {
