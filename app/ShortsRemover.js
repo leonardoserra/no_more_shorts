@@ -1,5 +1,6 @@
 export class ShortsRemover {
     static instance = null;
+    static started = false;
 
     static selectors = {
         homePageShortContainer: "div [is-shorts]",
@@ -14,7 +15,6 @@ export class ShortsRemover {
         this.window = window;
         this.document = window.document;
         this.redirecting = false;
-        this.started = false;
         this.removedCounter = 0;
     }
 
@@ -30,7 +30,7 @@ export class ShortsRemover {
         this.removeShortsFromPage();
         this.startObserving();
 
-        this.started = true;
+        ShortsRemover.started = true;
     }
 
     isYouTube() {
