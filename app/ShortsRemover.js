@@ -57,7 +57,7 @@ export class ShortsRemover {
     }
 
     getShortsSidebarElements() {
-        let shortsSidebarElements = [];
+        const shortsSidebarElements = [];
         const entries = this.document.querySelectorAll('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');
 
         entries.forEach(entry => {

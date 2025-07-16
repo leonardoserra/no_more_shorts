@@ -38,7 +38,7 @@ Total removed in this session: 69
 
    * `manifest.json`
    * `app.js`
-   * `hider.js`
+   * `ShortsRemover.js`
 
 The extension will be loaded into Chrome immediately.
 
