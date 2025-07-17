@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "No More Shorts",
-    "version": "1.2.5",
-    "description": "Hides shorts automatically",
+    "version": "1.0.0",
+    "description": "Hides Youtube shorts automatically",
     "permissions": ["activeTab", "scripting"],
     "content_scripts": [
         {
