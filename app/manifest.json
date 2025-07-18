@@ -3,7 +3,6 @@
     "name": "No More Shorts",
     "version": "1.0.0",
     "description": "Hides Youtube shorts automatically",
-    "permissions": ["activeTab", "scripting"],
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
