@@ -2,7 +2,7 @@
 
 `"I like You(...Tube), but I like you more with no Shorts." - Your Crush`  
 
-**No More Shorts** is a Chrome extension that removes YouTube Shorts from the homepage, sidebar, and suggested feeds to help you stay focused.
+**No More Shorts** is a Chrome extension that removes YouTube Shorts from the homepage, sidebar, and suggested feeds to help you stay focused.  
 
 ---
 
@@ -28,19 +28,27 @@ Total removed in this session: 69
 
 ---
 
-## Installation (Unpacked Extension)
+## Installation 
+>_From the Chrome Web Store_:  
+>1. Go to the [Extension Page](https://chromewebstore.google.com/detail/no-more-shorts/baijfpbfmfpllklnfjddmajnojkpdkga)
+>2. Press the install button.
+>3. Open YouTube on a new Tab.
+>4. Here you are :)
 
-1. Open Google Chrome.
-2. Go to `chrome://extensions/`.
-3. Enable **Developer Mode** (top right).
-4. Click **Load unpacked**.
-5. Select the `/app` directory containing:
-
-   * `manifest.json`
-   * `app.js`
-   * `ShortsRemover.js`
-
-The extension will be loaded into Chrome immediately.
+  OR
+  
+>_Unpacked Extension (save it in your pc)_:  
+>1. Open Google Chrome.
+>2. Go to `chrome://extensions/`.
+>3. Enable **Developer Mode** (top right).
+>4. Click **Load unpacked**.
+>5. Select the `/app` directory containing:
+>
+>  * `manifest.json`
+>   * `app.js`
+>   * `ShortsRemover.js`
+>Open YouTube on a new Tab
+>The extension will be loaded into Chrome immediately.
 
 ---
 
