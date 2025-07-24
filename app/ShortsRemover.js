@@ -7,6 +7,7 @@ export class ShortsRemover {
         resultsPageShortsContainer: "grid-shelf-view-model",
         shortsContainer: "#shorts-inner-container",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
+        notificationShortItem: "ytd-notification-renderer a[href^='/shorts']",
         chameleonShortsChildren: 'badge-shape[aria-label="Shorts"]',
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
@@ -107,6 +108,20 @@ export class ShortsRemover {
 
         return chameleonShorts;
     }
+    
+    getNotificationShortItems(){
+        const notificationShortItems = [];
+
+        this.document.querySelectorAll(ShortsRemover.selectors.notificationShortItem)
+            .forEach(el => {
+                const notificationShortItem = el.closest('ytd-notification-renderer');
+                if (notificationShortItem) {
+                    notificationShortItems.push(notificationShortItem);
+                }
+            });
+
+        return notificationShortItems;
+    }
 
     removeShortsFromPage() {
         this.redirectIfOnShortsPage();
@@ -122,18 +137,20 @@ export class ShortsRemover {
             );
             const shortsSidebarElements = this.getShortsSidebarElements();
             const chameleonShorts = this.getChameleonShorts();
+            const notificationShortItems = this.getNotificationShortItems();
             const shortChipElement = this.getShortsChipElement();
             
             const collections = [
                 blocksToHide,
                 shortsSidebarElements, 
                 chameleonShorts, 
-                shortChipElement
+                shortChipElement,
+                notificationShortItems
             ];
 
             const elementsToRemove = this.mergeElementsToRemove(...collections);
 
-            const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts);
+            const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems);
 
             if (elementsToRemove.length) {
                 elementsToRemove.forEach(el => el?.remove());
