@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "No More Shorts",
-    "version": "1.0.0",
-    "description": "Hides Youtube shorts automatically",
+    "version": "1.1.0",
+    "description": "Hides Youtube Shorts automatically",
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
