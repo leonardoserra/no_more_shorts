@@ -98,7 +98,7 @@ export class ShortsRemover {
         this.document
             .querySelectorAll('yt-chip-cloud-chip-renderer chip-shape button div')
             .forEach(chip => {
-                if (chip.innerHTML.toLowerCase() == "shorts") {
+                if (chip.innerText.toLowerCase() == "shorts") {
                     chipCollection.push(chip.closest('yt-chip-cloud-chip-renderer'));
                 }
             });
