@@ -32,6 +32,7 @@ export class ShortsRemover {
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
         notificationShortItem: "ytd-notification-renderer a[href^='/shorts']",
         chameleonShortsChildren: 'badge-shape[aria-label="Shorts"]',
+        channelShortsChip: 'yt-tab-shape[tab-title="Shorts"]',
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
 
@@ -61,6 +62,14 @@ export class ShortsRemover {
         return this.document.location.host.includes("youtube.com");
     }
 
+    isShortsPage(){
+        return this.document.location.pathname.startsWith('/shorts');
+    }
+
+    isChannelShortsPage() {
+        return this.document.location.pathname.includes("/shorts");
+    }
+
     infoMessage() {
         let message = `${this.removedCounter}`;
 
@@ -70,14 +79,35 @@ export class ShortsRemover {
     }
 
     redirectIfOnShortsPage() {
-        if (this.document.location.pathname.startsWith('/shorts')) {
-            if (!this.redirecting) {
+        if (this.isShortsPage()) {
+            this.redirectHandler(this.setHomePageLocation());
+        }
+    }
+
+    redirectIfOnChannelShortsPage() {
+        if (this.isChannelShortsPage()) {
+            this.redirectHandler(this.setChannelSection());
+        }
+    }
+
+    redirectHandler(location){
+        if (!this.redirecting) {
                 this.redirecting = true;
                 setTimeout(() => {
-                    this.window.location.replace('https://www.youtube.com');
+                    location;
                 }, 1000);
             }
-        }
+    }
+
+    setHomePageLocation(){
+        this.window.location.replace('https://www.youtube.com');
+    }
+    
+    setChannelSection(){
+        const path = this.document.location.pathname
+        const url = path.replace('/shorts', '')
+
+        this.window.location.replace(url);
     }
 
     getShortsSidebarElements() {
@@ -109,7 +139,7 @@ export class ShortsRemover {
     mergeElementsToRemove(...collections) {
         const elementsToRemove = [];
 
-        collections.forEach(collection => elementsToRemove.push(...collection));
+        collections.forEach(collection => { if (collection) elementsToRemove.push(...collection) });
 
         return elementsToRemove;
     }
@@ -148,6 +178,7 @@ export class ShortsRemover {
 
     removeShortsFromPage() {
         this.redirectIfOnShortsPage();
+        this.redirectIfOnChannelShortsPage();
 
         try {
             const blocksToHide = this.document.body.querySelectorAll(
@@ -155,26 +186,27 @@ export class ShortsRemover {
                     ShortsRemover.selectors.homePageShortContainer,
                     ShortsRemover.selectors.shortsContainer,
                     ShortsRemover.selectors.suggestedShortsCarousel,
-                    ShortsRemover.selectors.resultsPageShortsContainer
+                    ShortsRemover.selectors.resultsPageShortsContainer,
+                    ShortsRemover.selectors.channelShortsChip,
                 ].join(',')
             );
-            const shortsSidebarElements = this.getShortsSidebarElements();
+
             const chameleonShorts = this.getChameleonShorts();
-            const notificationShortItems = this.getNotificationShortItems();
             const shortChipElement = this.getShortsChipElement();
+            const shortsSidebarElements = this.getShortsSidebarElements();
+            const notificationShortItems = this.getNotificationShortItems();
             
             const collections = [
                 blocksToHide,
-                shortsSidebarElements, 
-                chameleonShorts, 
+                chameleonShorts,
                 shortChipElement,
-                notificationShortItems
+                shortsSidebarElements, 
+                notificationShortItems,
             ];
 
             const elementsToRemove = this.mergeElementsToRemove(...collections);
 
             const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems);
-
             if (elementsToRemove.length) {
                 elementsToRemove.forEach(el => el?.remove());
                 this.removedCounter += individualShortsRemovedCount;
