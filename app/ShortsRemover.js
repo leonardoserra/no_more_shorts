@@ -31,8 +31,8 @@ export class ShortsRemover {
         shortsContainer: "#shorts-inner-container",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
         notificationShortItem: "ytd-notification-renderer a[href^='/shorts']",
-        chameleonShortsChildren: 'badge-shape[aria-label="Shorts"]',
-        channelShortsChip: 'yt-tab-shape[tab-title="Shorts"]',
+        chameleonShortsChildren: "badge-shape[aria-label='Shorts']",
+        channelShortsChip: "yt-tab-shape[tab-title='Shorts']",
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
 
@@ -63,11 +63,11 @@ export class ShortsRemover {
     }
 
     isShortsPage(){
-        return this.document.location.pathname.startsWith('/shorts');
+        return this.document.location.pathname.startsWith("/shorts");
     }
 
     isChannelShortsPage() {
-        return this.document.location.pathname.includes("/shorts");
+        return this.document.location.pathname.endsWith("/shorts");
     }
 
     infoMessage() {
@@ -77,45 +77,44 @@ export class ShortsRemover {
 
         console.info(`Shorts removed for your focus!\nTotal removed in this session: ${message}`);
     }
-
-    redirectIfOnShortsPage() {
-        if (this.isShortsPage()) {
-            this.redirectHandler(this.setHomePageLocation());
-        }
+    
+    onForbiddenPage(){
+        return this.isShortsPage() || this.isChannelShortsPage();
     }
 
-    redirectIfOnChannelShortsPage() {
-        if (this.isChannelShortsPage()) {
-            this.redirectHandler(this.setChannelSection());
-        }
+    goBackHome() {
+        if (this.isShortsPage()) 
+            this.redirectHandler(this.setHomePageLocation.bind(this));
+        else if (this.isChannelShortsPage()) 
+            this.redirectHandler(this.setChannelSectionLocation.bind(this));
     }
 
     redirectHandler(location){
         if (!this.redirecting) {
                 this.redirecting = true;
                 setTimeout(() => {
-                    location;
+                    location();
                 }, 1000);
             }
     }
 
     setHomePageLocation(){
-        this.window.location.replace('https://www.youtube.com');
+        this.window.location.replace("https://www.youtube.com");
     }
     
-    setChannelSection(){
-        const path = this.document.location.pathname
-        const url = path.replace('/shorts', '')
+    setChannelSectionLocation(){
+        const path = this.document.location.pathname;
+        const url = path.replace("/shorts", "");
 
         this.window.location.replace(url);
     }
 
     getShortsSidebarElements() {
         const shortsSidebarElements = [];
-        const entries = this.document.querySelectorAll('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');
+        const entries = this.document.querySelectorAll("ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer");
 
         entries.forEach(entry => {
-            if (entry.querySelector('a[title="Shorts"]')) {
+            if (entry.querySelector("a[title='Shorts']")) {
                 shortsSidebarElements.push(entry);
             }
         });
@@ -126,10 +125,10 @@ export class ShortsRemover {
     getShortsChipElement() {
         const chipCollection = [];
         this.document
-            .querySelectorAll('yt-chip-cloud-chip-renderer chip-shape button div')
+            .querySelectorAll("yt-chip-cloud-chip-renderer chip-shape button div")
             .forEach(chip => {
                 if (chip.innerText.toLowerCase() == "shorts") {
-                    chipCollection.push(chip.closest('yt-chip-cloud-chip-renderer'));
+                    chipCollection.push(chip.closest("yt-chip-cloud-chip-renderer"));
                 }
             });
 
@@ -153,7 +152,7 @@ export class ShortsRemover {
 
         this.document.querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
             .forEach(el => {
-                const chameleonShort = el.closest('ytd-video-renderer');
+                const chameleonShort = el.closest("ytd-video-renderer");
                 if (chameleonShort) {
                     chameleonShorts.push(chameleonShort);
                 }
@@ -167,7 +166,7 @@ export class ShortsRemover {
 
         this.document.querySelectorAll(ShortsRemover.selectors.notificationShortItem)
             .forEach(el => {
-                const notificationShortItem = el.closest('ytd-notification-renderer');
+                const notificationShortItem = el.closest("ytd-notification-renderer");
                 if (notificationShortItem) {
                     notificationShortItems.push(notificationShortItem);
                 }
@@ -177,8 +176,10 @@ export class ShortsRemover {
     }
 
     removeShortsFromPage() {
-        this.redirectIfOnShortsPage();
-        this.redirectIfOnChannelShortsPage();
+        if (this.onForbiddenPage()){ 
+            this.goBackHome();
+            return;
+        }
 
         try {
             const blocksToHide = this.document.body.querySelectorAll(
@@ -188,7 +189,7 @@ export class ShortsRemover {
                     ShortsRemover.selectors.suggestedShortsCarousel,
                     ShortsRemover.selectors.resultsPageShortsContainer,
                     ShortsRemover.selectors.channelShortsChip,
-                ].join(',')
+                ].join(",")
             );
 
             const chameleonShorts = this.getChameleonShorts();
@@ -206,8 +207,8 @@ export class ShortsRemover {
 
             const elementsToRemove = this.mergeElementsToRemove(...collections);
 
-            const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems);
             if (elementsToRemove.length) {
+                const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems);
                 elementsToRemove.forEach(el => el?.remove());
                 this.removedCounter += individualShortsRemovedCount;
                 if (individualShortsRemovedCount > 0) this.infoMessage();
