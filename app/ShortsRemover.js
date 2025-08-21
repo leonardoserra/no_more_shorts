@@ -43,8 +43,8 @@ export class ShortsRemover {
         this.removedCounter = 0;
     }
 
-    static getInstance(window){
-        if (!ShortsRemover.instance){
+    static getInstance(window) {
+        if (!ShortsRemover.instance) {
             ShortsRemover.instance = new ShortsRemover(window);
         }
         return ShortsRemover.instance;
@@ -62,7 +62,7 @@ export class ShortsRemover {
         return this.document.location.host.includes("youtube.com");
     }
 
-    isShortsPage(){
+    isShortsPage() {
         return this.document.location.pathname.startsWith("/shorts");
     }
 
@@ -77,32 +77,32 @@ export class ShortsRemover {
 
         console.info(`Shorts removed for your focus!\nTotal removed in this session: ${message}`);
     }
-    
-    onForbiddenPage(){
+
+    onForbiddenPage() {
         return this.isShortsPage() || this.isChannelShortsPage();
     }
 
     goBackHome() {
-        if (this.isShortsPage()) 
+        if (this.isShortsPage())
             this.redirectHandler(this.setHomePageLocation.bind(this));
-        else if (this.isChannelShortsPage()) 
+        else if (this.isChannelShortsPage())
             this.redirectHandler(this.setChannelSectionLocation.bind(this));
     }
 
-    redirectHandler(location){
+    redirectHandler(location) {
         if (!this.redirecting) {
-                this.redirecting = true;
-                setTimeout(() => {
-                    location();
-                }, 1000);
-            }
+            this.redirecting = true;
+            setTimeout(() => {
+                location();
+            }, 1000);
+        }
     }
 
-    setHomePageLocation(){
+    setHomePageLocation() {
         this.window.location.replace("https://www.youtube.com");
     }
-    
-    setChannelSectionLocation(){
+
+    setChannelSectionLocation() {
         const path = this.document.location.pathname;
         const url = path.replace("/shorts", "");
 
@@ -146,8 +146,8 @@ export class ShortsRemover {
     getShortsToRemoveCount(...others) {
         return this.document.body.querySelectorAll(ShortsRemover.selectors.singleShortSelector).length + others.length;
     }
-    
-    getChameleonShorts(){
+
+    getChameleonShorts() {
         const chameleonShorts = [];
 
         this.document.querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
@@ -160,8 +160,8 @@ export class ShortsRemover {
 
         return chameleonShorts;
     }
-    
-    getNotificationShortItems(){
+
+    getNotificationShortItems() {
         const notificationShortItems = [];
 
         this.document.querySelectorAll(ShortsRemover.selectors.notificationShortItem)
@@ -176,7 +176,7 @@ export class ShortsRemover {
     }
 
     removeShortsFromPage() {
-        if (this.onForbiddenPage()){ 
+        if (this.onForbiddenPage()) {
             this.goBackHome();
             return;
         }
@@ -196,19 +196,23 @@ export class ShortsRemover {
             const shortChipElement = this.getShortsChipElement();
             const shortsSidebarElements = this.getShortsSidebarElements();
             const notificationShortItems = this.getNotificationShortItems();
-            
+
             const collections = [
                 blocksToHide,
                 chameleonShorts,
                 shortChipElement,
-                shortsSidebarElements, 
+                shortsSidebarElements,
                 notificationShortItems,
             ];
 
             const elementsToRemove = this.mergeElementsToRemove(...collections);
 
             if (elementsToRemove.length) {
-                const individualShortsRemovedCount = this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems);
+                const individualShortsRemovedCount =
+                    this.getShortsToRemoveCount(
+                        ...chameleonShorts,
+                        ...notificationShortItems
+                    );
                 elementsToRemove.forEach(el => el?.remove());
                 this.removedCounter += individualShortsRemovedCount;
                 if (individualShortsRemovedCount > 0) this.infoMessage();
