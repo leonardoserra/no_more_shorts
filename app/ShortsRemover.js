@@ -132,23 +132,25 @@ export class ShortsRemover {
         return shortsSidebarElements;
     }
 
-    getShortsChipElement() {
-        const chipCollection = [];
+    getChipsCollection() {
+        const chipsCollection = [];
         this.document
             .querySelectorAll(ShortsRemover.selectors.navbarChipContainer)
             .forEach(chip => {
                 if (chip.innerText.toLowerCase() == "shorts") {
-                    chipCollection.push(chip.closest(ShortsRemover.selectors.innerNavbarChipContainer));
+                    chipsCollection.push(chip.closest(ShortsRemover.selectors.innerNavbarChipContainer));
                 }
             });
 
-        return chipCollection;
+        return chipsCollection;
     }
 
-    mergeElementsToRemove(...collections) {
+    mergeElementsToRemove(collections) {
         const elementsToRemove = [];
 
-        collections.forEach(collection => { if (collection) elementsToRemove.push(...collection) });
+        Object.values(collections).forEach(elementList=>{
+            if (elementList) elementsToRemove.push(...elementList);
+        })
 
         return elementsToRemove;
     }
@@ -157,7 +159,7 @@ export class ShortsRemover {
         return this.document.body.querySelectorAll(ShortsRemover.selectors.singleShortSelector).length + others.length;
     }
 
-    getChameleonShorts() {
+    getChameleonShortsCollection() {
         const chameleonShorts = [];
 
         this.document.querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
@@ -185,33 +187,37 @@ export class ShortsRemover {
         return notificationShortItems;
     }
 
-    getElementToRemoveAndCount(){
-        const blocksToHide = this.document.body.querySelectorAll(
-            [
-                ShortsRemover.selectors.homePageShortContainer,
-                ShortsRemover.selectors.shortsContainer,
-                ShortsRemover.selectors.resultsPageShortsContainer,
-                ShortsRemover.selectors.channelShortsChip,
-            ] + (this.isHistoryPage() ? [] : ShortsRemover.selectors.suggestedShortsCarousel)
-            .join(",")
-        );
-
-        const chameleonShorts = this.getChameleonShorts();
-        const shortChipElement = this.getShortsChipElement();
-        const shortsSidebarElements = this.getShortsSidebarElements();
-        const notificationShortItems = this.getNotificationShortItems();
-
-        const collections = [
-            blocksToHide,
-            chameleonShorts,
-            shortChipElement,
-            shortsSidebarElements,
-            notificationShortItems,
+    getBasicBlocksToHideCollection(){
+        const basicBlocksSelectors = [
+            ShortsRemover.selectors.homePageShortContainer,
+            ShortsRemover.selectors.shortsContainer,
+            ShortsRemover.selectors.resultsPageShortsContainer,
+            ShortsRemover.selectors.channelShortsChip,
         ];
 
-        const elementsToRemove = this.mergeElementsToRemove(...collections);
+        if (!this.isHistoryPage()) basicBlocksSelectors.push(ShortsRemover.selectors.suggestedShortsCarousel);
+
+        const basicBlocksCollection = this.document.body.querySelectorAll(basicBlocksSelectors.join(','));
+
+        return basicBlocksCollection;
+    }
+
+    getElementsToRemoveCollections(){
+        return { 
+            basicBlocksToHide: this.getBasicBlocksToHideCollection(),
+            chameleonShorts: this.getChameleonShortsCollection(),
+            shortsChipElement: this.getChipsCollection(),
+            shortsSidebarElements: this.getShortsSidebarElements(),
+            notificationShortItems: this.getNotificationShortItems()
+        }
+    }
+
+    getElementToRemoveAndCount(){
+        const collections = this.getElementsToRemoveCollections();
+
+        const elementsToRemove = this.mergeElementsToRemove(collections);
         const individualShortsRemovedCount = elementsToRemove.length 
-            ? this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems)
+            ? this.getShortsToRemoveCount(...collections.chameleonShorts, ...collections.notificationShortItems)
             : 0;
 
         return {elementsToRemove: elementsToRemove, individualShortsRemovedCount: individualShortsRemovedCount}
