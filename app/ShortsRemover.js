@@ -66,6 +66,10 @@ export class ShortsRemover {
         return this.document.location.pathname.startsWith("/shorts");
     }
 
+    isHistoryPage(){
+        return this.document.location.pathname.includes("/feed/history");
+    }
+
     isChannelShortsPage() {
         return this.document.location.pathname.endsWith("/shorts");
     }
@@ -175,6 +179,37 @@ export class ShortsRemover {
         return notificationShortItems;
     }
 
+    getElementToRemoveAndCount(){
+        const blocksToHide = this.document.body.querySelectorAll(
+            [
+                ShortsRemover.selectors.homePageShortContainer,
+                ShortsRemover.selectors.shortsContainer,
+                ShortsRemover.selectors.suggestedShortsCarousel,
+                ShortsRemover.selectors.resultsPageShortsContainer,
+                ShortsRemover.selectors.channelShortsChip,
+            ].join(",")
+        );
+
+        const chameleonShorts = this.getChameleonShorts();
+        const shortChipElement = this.getShortsChipElement();
+        const shortsSidebarElements = this.getShortsSidebarElements();
+        const notificationShortItems = this.getNotificationShortItems();
+
+        const collections = [
+            blocksToHide,
+            chameleonShorts,
+            shortChipElement,
+            shortsSidebarElements,
+            notificationShortItems,
+        ];
+        const elementsToRemove = this.mergeElementsToRemove(...collections);
+        const individualShortsRemovedCount = elementsToRemove.length 
+        ? this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems)
+        : 0;
+
+        return {elementsToRemove: elementsToRemove, individualShortsRemovedCount: individualShortsRemovedCount}
+    }
+    
     removeShortsFromPage() {
         if (this.onForbiddenPage()) {
             this.goBackHome();
@@ -182,37 +217,9 @@ export class ShortsRemover {
         }
 
         try {
-            const blocksToHide = this.document.body.querySelectorAll(
-                [
-                    ShortsRemover.selectors.homePageShortContainer,
-                    ShortsRemover.selectors.shortsContainer,
-                    ShortsRemover.selectors.suggestedShortsCarousel,
-                    ShortsRemover.selectors.resultsPageShortsContainer,
-                    ShortsRemover.selectors.channelShortsChip,
-                ].join(",")
-            );
-
-            const chameleonShorts = this.getChameleonShorts();
-            const shortChipElement = this.getShortsChipElement();
-            const shortsSidebarElements = this.getShortsSidebarElements();
-            const notificationShortItems = this.getNotificationShortItems();
-
-            const collections = [
-                blocksToHide,
-                chameleonShorts,
-                shortChipElement,
-                shortsSidebarElements,
-                notificationShortItems,
-            ];
-
-            const elementsToRemove = this.mergeElementsToRemove(...collections);
+            const {elementsToRemove, individualShortsRemovedCount} = this.getElementToRemoveAndCount();
 
             if (elementsToRemove.length) {
-                const individualShortsRemovedCount =
-                    this.getShortsToRemoveCount(
-                        ...chameleonShorts,
-                        ...notificationShortItems
-                    );
                 elementsToRemove.forEach(el => el?.remove());
                 this.removedCounter += individualShortsRemovedCount;
                 if (individualShortsRemovedCount > 0) this.infoMessage();
