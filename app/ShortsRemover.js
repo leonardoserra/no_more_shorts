@@ -28,11 +28,17 @@ export class ShortsRemover {
     static selectors = {
         homePageShortContainer: "div [is-shorts]",
         resultsPageShortsContainer: "grid-shelf-view-model",
+        shortSidebarElements: "ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer",
         shortsContainer: "#shorts-inner-container",
+        anchorWithShortsTitle: "a[title='Shorts']",
         suggestedShortsCarousel: "ytd-reel-shelf-renderer",
         notificationShortItem: "ytd-notification-renderer a[href^='/shorts']",
+        notificationShortContainer: "ytd-notification-renderer",
+        chameleonShortsContainer: "ytd-video-renderer",
         chameleonShortsChildren: "badge-shape[aria-label='Shorts']",
         channelShortsChip: "yt-tab-shape[tab-title='Shorts']",
+        navbarChipContainer: "yt-chip-cloud-chip-renderer chip-shape button div",
+        innerNavbarChipContainer: "yt-chip-cloud-chip-renderer",
         singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
     };
 
@@ -115,10 +121,10 @@ export class ShortsRemover {
 
     getShortsSidebarElements() {
         const shortsSidebarElements = [];
-        const entries = this.document.querySelectorAll("ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer");
+        const entries = this.document.querySelectorAll(ShortsRemover.selectors.shortSidebarElements);
 
         entries.forEach(entry => {
-            if (entry.querySelector("a[title='Shorts']")) {
+            if (entry.querySelector(ShortsRemover.selectors.anchorWithShortsTitle)) {
                 shortsSidebarElements.push(entry);
             }
         });
@@ -129,10 +135,10 @@ export class ShortsRemover {
     getShortsChipElement() {
         const chipCollection = [];
         this.document
-            .querySelectorAll("yt-chip-cloud-chip-renderer chip-shape button div")
+            .querySelectorAll(ShortsRemover.selectors.navbarChipContainer)
             .forEach(chip => {
                 if (chip.innerText.toLowerCase() == "shorts") {
-                    chipCollection.push(chip.closest("yt-chip-cloud-chip-renderer"));
+                    chipCollection.push(chip.closest(ShortsRemover.selectors.innerNavbarChipContainer));
                 }
             });
 
@@ -156,7 +162,7 @@ export class ShortsRemover {
 
         this.document.querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
             .forEach(el => {
-                const chameleonShort = el.closest("ytd-video-renderer");
+                const chameleonShort = el.closest(ShortsRemover.selectors.chameleonShortsContainer);
                 if (chameleonShort) {
                     chameleonShorts.push(chameleonShort);
                 }
@@ -170,7 +176,7 @@ export class ShortsRemover {
 
         this.document.querySelectorAll(ShortsRemover.selectors.notificationShortItem)
             .forEach(el => {
-                const notificationShortItem = el.closest("ytd-notification-renderer");
+                const notificationShortItem = el.closest(ShortsRemover.selectors.notificationShortContainer);
                 if (notificationShortItem) {
                     notificationShortItems.push(notificationShortItem);
                 }
@@ -183,12 +189,14 @@ export class ShortsRemover {
 
         // TODO: use isHistoryPage and show the reels, but still make all works
         // on sidebar, redirecting, notifications, and so on.
+        // what is the only thing that can be shown in the history page?
+        // the shorts carousels and the shorts chip
 
         const blocksToHide = this.document.body.querySelectorAll(
             [
                 ShortsRemover.selectors.homePageShortContainer,
                 ShortsRemover.selectors.shortsContainer,
-                ShortsRemover.selectors.suggestedShortsCarousel,
+                ShortsRemover.selectors.suggestedShortsCarousel, //questo va tenuto in history
                 ShortsRemover.selectors.resultsPageShortsContainer,
                 ShortsRemover.selectors.channelShortsChip,
             ].join(",")
