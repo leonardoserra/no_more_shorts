@@ -206,10 +206,11 @@ export class ShortsRemover {
             shortsSidebarElements,
             notificationShortItems,
         ];
+
         const elementsToRemove = this.mergeElementsToRemove(...collections);
         const individualShortsRemovedCount = elementsToRemove.length 
-        ? this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems)
-        : 0;
+            ? this.getShortsToRemoveCount(...chameleonShorts, ...notificationShortItems)
+            : 0;
 
         return {elementsToRemove: elementsToRemove, individualShortsRemovedCount: individualShortsRemovedCount}
     }
