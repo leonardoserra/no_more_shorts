@@ -180,6 +180,10 @@ export class ShortsRemover {
     }
 
     getElementToRemoveAndCount(){
+
+        // TODO: use isHistoryPage and show the reels, but still make all works
+        // on sidebar, redirecting, notifications, and so on.
+
         const blocksToHide = this.document.body.querySelectorAll(
             [
                 ShortsRemover.selectors.homePageShortContainer,
