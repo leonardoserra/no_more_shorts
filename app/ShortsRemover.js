@@ -186,20 +186,14 @@ export class ShortsRemover {
     }
 
     getElementToRemoveAndCount(){
-
-        // TODO: use isHistoryPage and show the reels, but still make all works
-        // on sidebar, redirecting, notifications, and so on.
-        // what is the only thing that can be shown in the history page?
-        // the shorts carousels and the shorts chip
-
         const blocksToHide = this.document.body.querySelectorAll(
             [
                 ShortsRemover.selectors.homePageShortContainer,
                 ShortsRemover.selectors.shortsContainer,
-                ShortsRemover.selectors.suggestedShortsCarousel, //questo va tenuto in history
                 ShortsRemover.selectors.resultsPageShortsContainer,
                 ShortsRemover.selectors.channelShortsChip,
-            ].join(",")
+            ] + (this.isHistoryPage() ? [] : ShortsRemover.selectors.suggestedShortsCarousel)
+            .join(",")
         );
 
         const chameleonShorts = this.getChameleonShorts();
