@@ -205,7 +205,7 @@ export class ShortsRemover {
     getElementsToRemoveCollections(){
         return { 
             basicBlocksToHide: this.getBasicBlocksToHideCollection(),
-            chameleonShorts: this.getChameleonShortsCollection(),
+            chameleonShorts: this.isHistoryPage() ? [] : this.getChameleonShortsCollection(),
             shortsChipElement: this.getChipsCollection(),
             shortsSidebarElements: this.getShortsSidebarElements(),
             notificationShortItems: this.getNotificationShortItems()
