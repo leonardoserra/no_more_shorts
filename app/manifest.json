@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "No More Shorts",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "Hides Youtube Shorts automatically",
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8VzpgPzmI7XhjBKUTsRxdFCFh5/hn9RiCx/DFIuQKi6FbxJMNU7+QKdBAQDaLLtHF0Hof0f+32aQbaPTdra/9EhroiTLDgAdgySQINIXo5IJ+AR6RStD3EFxD1iZL0U7A1/RhKMVL9l3mHJhdyCE0x+OpHJ5kjEg8VyX8B6PQMBiK6XassPotBZIDgZLuULffHNnVd5Ll37PUYSAwmb6GhUp4LwGKtEI8nY6xPxVuoPs+H4qzJeNfMW1tONQ1aDA8t4wdMRVgddZ3yobR1eSBE7i138/kEFlWKmjhphqzbGxbe/B/b9eH56rxOL+o5UMaj6mQltBGJMUZZNM3/q/5wIDAQAB",
     "content_scripts": [
