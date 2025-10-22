@@ -139,24 +139,27 @@ export class ShortsRemover {
     return notificationShortItems;
   }
 
-  get basicBlocksToHideCollection() {
+  get blocksToHide() {
+    return this.elementsBySelectors([ShortsRemover.selectors.channelShortsChip]);
+  }
+
+  get basicBlocksToRemoveCollection() {
     const basicBlocksSelectors = [
       ShortsRemover.selectors.homePageShortContainer,
       ShortsRemover.selectors.shortsContainer,
       ShortsRemover.selectors.resultsPageShortsContainer,
-      ShortsRemover.selectors.channelShortsChip,
     ];
 
     if (!this.isHistoryPage()) basicBlocksSelectors.push(ShortsRemover.selectors.suggestedShortsCarousel);
 
-    const basicBlocksCollection = this.document.body.querySelectorAll(basicBlocksSelectors.join(','));
+    const basicBlocksCollection = this.elementsBySelectors(basicBlocksSelectors);
 
     return basicBlocksCollection;
   }
 
   get elementsToRemoveCollections() {
     return {
-      basicBlocksToHide: this.basicBlocksToHideCollection,
+      basicBlocksToRemove: this.basicBlocksToRemoveCollection,
       chameleonShorts: this.isHistoryPage() ? [] : this.chameleonShortsCollection,
       shortsChipElement: this.chipsCollection,
       shortsSidebarElements: this.shortsSidebarElements,
@@ -174,7 +177,7 @@ export class ShortsRemover {
 
     return { elementsToRemove: elementsToRemove, individualShortsRemovedCount: individualShortsRemovedCount }
   }
-  
+
   printInfoMessage() {
     const divider = '\n--------------------------------------\n'
     let message = `${this.removedCounter}`;
@@ -211,6 +214,10 @@ export class ShortsRemover {
     }
   }
 
+  elementsBySelectors(selectors) {
+    return this.document.body.querySelectorAll(selectors.join(','));
+  }
+
   mergeElementsToRemove(collections) {
     const elementsToRemove = [];
 
@@ -222,7 +229,14 @@ export class ShortsRemover {
   }
 
   shortsToRemoveCount(...others) {
-    return this.document.body.querySelectorAll(ShortsRemover.selectors.singleShortSelector).length + others.length;
+    return this.elementsBySelectors([ShortsRemover.selectors.singleShortSelector]).length + others.length;
+  }
+
+  hideElements(elements) {
+    elements.forEach(el => {
+      let alreadyHidden = el.style.zIndex && el.style.zIndex === '-1000';
+      if (!alreadyHidden) el.style.zIndex = '-1000';
+    });
   }
 
   removeShortsFromPage() {
@@ -248,6 +262,7 @@ export class ShortsRemover {
   startObserving() {
     const debouncedCallback = this.debounce((mutationList, observer) => {
       this.removeShortsFromPage();
+      this.hideElements(this.blocksToHide)
     }, 300);
 
     try {
