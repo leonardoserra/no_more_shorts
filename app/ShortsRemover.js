@@ -139,8 +139,8 @@ export class ShortsRemover {
     return notificationShortItems;
   }
 
-  get blocksToHide() {
-    return this.elementsBySelectors([ShortsRemover.selectors.channelShortsChip]);
+  get channelShortsChipElement() {
+    return this.elementsBySelectors(ShortsRemover.selectors.channelShortsChip);
   }
 
   get basicBlocksToRemoveCollection() {
@@ -215,7 +215,13 @@ export class ShortsRemover {
   }
 
   elementsBySelectors(selectors) {
-    return this.document.body.querySelectorAll(selectors.join(','));
+    return this.document.body.querySelectorAll(
+      this.isArray(selectors) ? selectors.join(',') : selectors
+    );
+  }
+
+  isArray(object){
+    return object instanceof Array;
   }
 
   mergeElementsToRemove(collections) {
@@ -229,13 +235,26 @@ export class ShortsRemover {
   }
 
   shortsToRemoveCount(...others) {
-    return this.elementsBySelectors([ShortsRemover.selectors.singleShortSelector]).length + others.length;
+    return this.elementsBySelectors(ShortsRemover.selectors.singleShortSelector).length + others.length;
+  }
+
+  killChildren(element){
+    const rules =  ['margin', 'padding', 'min-width'];
+    const zeroValue = '0px';
+
+    if (element?.constructor?.name === 'HTMLElement') {
+      element.childNodes?.forEach(child => child?.remove());
+
+      rules.forEach(rule => {
+        if(element.style[rule] != zeroValue)
+          element.style[rule] = zeroValue;
+      });
+    }
   }
 
   hideElements(elements) {
     elements.forEach(el => {
-      let alreadyHidden = el.style.zIndex && el.style.zIndex === '-1000';
-      if (!alreadyHidden) el.style.zIndex = '-1000';
+      this.killChildren(el);
     });
   }
 
@@ -262,7 +281,7 @@ export class ShortsRemover {
   startObserving() {
     const debouncedCallback = this.debounce((mutationList, observer) => {
       this.removeShortsFromPage();
-      this.hideElements(this.blocksToHide)
+      this.hideElements(this.channelShortsChipElement)
     }, 300);
 
     try {
