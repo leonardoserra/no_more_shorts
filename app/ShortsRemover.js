@@ -220,7 +220,7 @@ export class ShortsRemover {
     );
   }
 
-  isArray(object){
+  isArray(object) {
     return object instanceof Array;
   }
 
@@ -238,15 +238,15 @@ export class ShortsRemover {
     return this.elementsBySelectors(ShortsRemover.selectors.singleShortSelector).length + others.length;
   }
 
-  killChildren(element){
-    const rules =  ['margin', 'padding', 'min-width'];
+  killChildren(element) {
+    const rules = ['margin', 'padding', 'min-width'];
     const zeroValue = '0px';
 
     if (element?.constructor?.name === 'HTMLElement') {
       element.childNodes?.forEach(child => child?.remove());
 
       rules.forEach(rule => {
-        if(element.style[rule] != zeroValue)
+        if (element.style[rule] != zeroValue)
           element.style[rule] = zeroValue;
       });
     }
