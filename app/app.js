@@ -1,6 +1,6 @@
 /**
  * Released under MIT License
- * 
+ *
  * Copyright (c) 2025 Leonardo Serra.
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -8,10 +8,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, andor sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,12 +22,16 @@
  */
 
 (async () => {
-    if (window.location.host.includes("youtube.com")) {
-        const { ShortsRemover } = await import(chrome.runtime.getURL('./ShortsRemover.js'));
+  if (window.location.host.includes("youtube.com")) {
+    const client = globalThis.browser ?? globalThis.chrome;
 
-        if (ShortsRemover.started) return;
+    const { ShortsRemover } = await import(
+      client.runtime.getURL("./ShortsRemover.js")
+    );
 
-        const app = ShortsRemover.getInstance(window);
-        app.init();
-    }
+    if (ShortsRemover.started) return;
+
+    const app = ShortsRemover.getInstance(window);
+    app.init();
+  }
 })();

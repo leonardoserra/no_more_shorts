@@ -1,0 +1,24 @@
+name: Prettier Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  prettier-check:
+    runs-on: ubuntu-latest
+    name: Prettier Check
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Check formatting on all files
+        run: npx prettier --check . --ignore-path .prettierignore

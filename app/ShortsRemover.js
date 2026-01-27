@@ -1,6 +1,6 @@
 /**
  * Released under MIT License
- * 
+ *
  * Copyright (c) 2025 Leonardo Serra.
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -8,10 +8,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, andor sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,7 +28,8 @@ export class ShortsRemover {
   static selectors = {
     homePageShortContainer: "div [is-shorts]",
     resultsPageShortsContainer: "grid-shelf-view-model",
-    shortSidebarElements: "ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer",
+    shortSidebarElements:
+      "ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer",
     shortsContainer: "#shorts-inner-container",
     anchorWithShortsTitle: "a[title='Shorts']",
     suggestedShortsCarousel: "ytd-reel-shelf-renderer",
@@ -39,7 +40,8 @@ export class ShortsRemover {
     channelShortsChip: "yt-tab-shape[tab-title='Shorts']",
     navbarChipContainer: "yt-chip-cloud-chip-renderer chip-shape button div",
     innerNavbarChipContainer: "yt-chip-cloud-chip-renderer",
-    singleShortSelector: "ytm-shorts-lockup-view-model, ytd-reel-video-renderer"
+    singleShortSelector:
+      "ytm-shorts-lockup-view-model, ytd-reel-video-renderer",
   };
 
   redirecting = false;
@@ -87,9 +89,11 @@ export class ShortsRemover {
 
   get shortsSidebarElements() {
     const shortsSidebarElements = [];
-    const entries = this.document.querySelectorAll(ShortsRemover.selectors.shortSidebarElements);
+    const entries = this.document.querySelectorAll(
+      ShortsRemover.selectors.shortSidebarElements
+    );
 
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.querySelector(ShortsRemover.selectors.anchorWithShortsTitle)) {
         shortsSidebarElements.push(entry);
       }
@@ -102,9 +106,11 @@ export class ShortsRemover {
     const chipsCollection = [];
     this.document
       .querySelectorAll(ShortsRemover.selectors.navbarChipContainer)
-      .forEach(chip => {
+      .forEach((chip) => {
         if (chip.innerText.toLowerCase() == "shorts") {
-          chipsCollection.push(chip.closest(ShortsRemover.selectors.innerNavbarChipContainer));
+          chipsCollection.push(
+            chip.closest(ShortsRemover.selectors.innerNavbarChipContainer)
+          );
         }
       });
 
@@ -114,9 +120,12 @@ export class ShortsRemover {
   get chameleonShortsCollection() {
     const chameleonShorts = [];
 
-    this.document.querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
-      .forEach(el => {
-        const chameleonShort = el.closest(ShortsRemover.selectors.chameleonShortsContainer);
+    this.document
+      .querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
+      .forEach((el) => {
+        const chameleonShort = el.closest(
+          ShortsRemover.selectors.chameleonShortsContainer
+        );
         if (chameleonShort) {
           chameleonShorts.push(chameleonShort);
         }
@@ -128,9 +137,12 @@ export class ShortsRemover {
   get notificationShortItems() {
     const notificationShortItems = [];
 
-    this.document.querySelectorAll(ShortsRemover.selectors.notificationShortItem)
-      .forEach(el => {
-        const notificationShortItem = el.closest(ShortsRemover.selectors.notificationShortContainer);
+    this.document
+      .querySelectorAll(ShortsRemover.selectors.notificationShortItem)
+      .forEach((el) => {
+        const notificationShortItem = el.closest(
+          ShortsRemover.selectors.notificationShortContainer
+        );
         if (notificationShortItem) {
           notificationShortItems.push(notificationShortItem);
         }
@@ -150,9 +162,13 @@ export class ShortsRemover {
       ShortsRemover.selectors.resultsPageShortsContainer,
     ];
 
-    if (!this.isHistoryPage()) basicBlocksSelectors.push(ShortsRemover.selectors.suggestedShortsCarousel);
+    if (!this.isHistoryPage())
+      basicBlocksSelectors.push(
+        ShortsRemover.selectors.suggestedShortsCarousel
+      );
 
-    const basicBlocksCollection = this.elementsBySelectors(basicBlocksSelectors);
+    const basicBlocksCollection =
+      this.elementsBySelectors(basicBlocksSelectors);
 
     return basicBlocksCollection;
   }
@@ -160,11 +176,13 @@ export class ShortsRemover {
   get elementsToRemoveCollections() {
     return {
       basicBlocksToRemove: this.basicBlocksToRemoveCollection,
-      chameleonShorts: this.isHistoryPage() ? [] : this.chameleonShortsCollection,
+      chameleonShorts: this.isHistoryPage()
+        ? []
+        : this.chameleonShortsCollection,
       shortsChipElement: this.chipsCollection,
       shortsSidebarElements: this.shortsSidebarElements,
       notificationShortItems: this.notificationShortItems,
-    }
+    };
   }
 
   get elementToRemoveAndCount() {
@@ -172,19 +190,27 @@ export class ShortsRemover {
 
     const elementsToRemove = this.mergeElementsToRemove(collections);
     const individualShortsRemovedCount = elementsToRemove.length
-      ? this.shortsToRemoveCount(...collections.chameleonShorts, ...collections.notificationShortItems)
+      ? this.shortsToRemoveCount(
+          ...collections.chameleonShorts,
+          ...collections.notificationShortItems
+        )
       : 0;
 
-    return { elementsToRemove: elementsToRemove, individualShortsRemovedCount: individualShortsRemovedCount }
+    return {
+      elementsToRemove: elementsToRemove,
+      individualShortsRemovedCount: individualShortsRemovedCount,
+    };
   }
 
   printInfoMessage() {
-    const divider = '\n--------------------------------------\n'
+    const divider = "\n--------------------------------------\n";
     let message = `${this.removedCounter}`;
 
     if (this.removedCounter > 1000) message += " (That's A LOT!)";
 
-    console.info(`${divider}Shorts removed for your focus!\nTotal removed in this session: ${message}${divider}`);
+    console.info(
+      `${divider}Shorts removed for your focus!\nTotal removed in this session: ${message}${divider}`
+    );
   }
 
   toHomePage() {
@@ -216,7 +242,7 @@ export class ShortsRemover {
 
   elementsBySelectors(selectors) {
     return this.document.body.querySelectorAll(
-      this.isArray(selectors) ? selectors.join(',') : selectors
+      this.isArray(selectors) ? selectors.join(",") : selectors
     );
   }
 
@@ -227,33 +253,35 @@ export class ShortsRemover {
   mergeElementsToRemove(collections) {
     const elementsToRemove = [];
 
-    Object.values(collections).forEach(elementList => {
+    Object.values(collections).forEach((elementList) => {
       if (elementList) elementsToRemove.push(...elementList);
-    })
+    });
 
     return elementsToRemove;
   }
 
   shortsToRemoveCount(...others) {
-    return this.elementsBySelectors(ShortsRemover.selectors.singleShortSelector).length + others.length;
+    return (
+      this.elementsBySelectors(ShortsRemover.selectors.singleShortSelector)
+        .length + others.length
+    );
   }
 
   killChildren(element) {
-    const rules = ['margin', 'padding', 'min-width'];
-    const zeroValue = '0px';
+    const rules = ["margin", "padding", "min-width"];
+    const zeroValue = "0px";
 
-    if (element?.constructor?.name === 'HTMLElement') {
-      element.childNodes?.forEach(child => child?.remove());
+    if (element?.constructor?.name === "HTMLElement") {
+      element.childNodes?.forEach((child) => child?.remove());
 
-      rules.forEach(rule => {
-        if (element.style[rule] != zeroValue)
-          element.style[rule] = zeroValue;
+      rules.forEach((rule) => {
+        if (element.style[rule] != zeroValue) element.style[rule] = zeroValue;
       });
     }
   }
 
   hideElements(elements) {
-    elements.forEach(el => {
+    elements.forEach((el) => {
       this.killChildren(el);
     });
   }
@@ -265,14 +293,14 @@ export class ShortsRemover {
     }
 
     try {
-      const { elementsToRemove, individualShortsRemovedCount } = this.elementToRemoveAndCount;
+      const { elementsToRemove, individualShortsRemovedCount } =
+        this.elementToRemoveAndCount;
 
       if (elementsToRemove.length) {
-        elementsToRemove.forEach(el => el?.remove());
+        elementsToRemove.forEach((el) => el?.remove());
         this.removedCounter += individualShortsRemovedCount;
         if (individualShortsRemovedCount > 0) this.printInfoMessage();
       }
-
     } catch (e) {
       console.warn("Error removing shorts:", e);
     }
@@ -281,7 +309,7 @@ export class ShortsRemover {
   startObserving() {
     const debouncedCallback = this.debounce((mutationList, observer) => {
       this.removeShortsFromPage();
-      this.hideElements(this.channelShortsChipElement)
+      this.hideElements(this.channelShortsChipElement);
     }, 300);
 
     try {
