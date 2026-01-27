@@ -62,7 +62,7 @@ _Unpacked Extension (save it in your pc)_:
     `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`
 
   - [__powershell__]  
-    `Copy-Item -Path .\app\* -Destination .\firefox_app\ -Recurse -Force; Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
+    `Copy-Item -Path .\app\* -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
 
 - Create a zip from it:
   - [__zsh__]  
