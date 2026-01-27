@@ -37,7 +37,7 @@ export class ShortsRemover {
     notificationShortContainer: "ytd-notification-renderer",
     chameleonShortsContainer: "ytd-video-renderer",
     chameleonShortsChildren: "badge-shape[aria-label='Shorts']",
-    channelShortsChip: "yt-tab-shape[tab-title='Shorts']",
+    channelShortsChip: "yt-tab-shape[tab-title^='Short']",
     navbarChipContainer: "yt-chip-cloud-chip-renderer chip-shape button div",
     innerNavbarChipContainer: "yt-chip-cloud-chip-renderer",
     singleShortSelector:

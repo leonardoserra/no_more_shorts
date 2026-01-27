@@ -46,11 +46,10 @@ _Unpacked Extension (save it in your pc)_:
 3.  Enable **Developer Mode** (top right).
 4.  Click **Load unpacked**.
 5.  Select the `/app` directory containing:
-    - `manifest.json` (este es el manifiesto para Chrome, **no funcionará en Firefox**)
+    - `manifest.json`
     - `app.js`
     - `ShortsRemover.js`
-      Open YouTube on a new Tab
-      The extension will be loaded into Chrome immediately.
+6.  Open YouTube on a new Tab. The extension will be loaded into Chrome immediately.
 
 ## Installation (Mozilla Firefox)
 
@@ -63,13 +62,13 @@ _Unpacked Extension (save it in your pc)_:
     `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`
 
   - [__powershell__]  
-    `Copy-Item -Path .\app\ -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
+    `Copy-Item -Path .\app\* -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
 
 - Create a zip from it:
   - [__zsh__]  
     `zip -r firefox_app.zip firefox_app/`
   - [__Powershell__]  
-    `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal`
+    `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal -Force;`
 
 2.  Open Firefox.
 3.  Go to `about:debugging#/runtime/this-firefox` in the address bar.
