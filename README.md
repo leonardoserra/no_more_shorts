@@ -30,48 +30,48 @@ Total removed in this session: 69
 
 ## Installation (chrome)
 
-> _From the Chrome Web Store_:
->
-> 1.  Go to the [Extension Page](https://chromewebstore.google.com/detail/no-more-shorts/baijfpbfmfpllklnfjddmajnojkpdkga)
-> 2.  Press the install button.
-> 3.  Open YouTube on a new Tab.
-> 4.  Here you are :)
+_From the Chrome Web Store_:
+1.  Go to the [Extension Page](https://chromewebstore.google.com/detail/no-more-shorts/baijfpbfmfpllklnfjddmajnojkpdkga)
+2.  Press the install button.
+3.  Open YouTube on a new Tab.
+4.  Here you are :)
 
 OR
 
-> _Unpacked Extension (save it in your pc)_:
->
-> 1.  Open Google Chrome.
-> 2.  Go to `chrome://extensions/` (digit it on the url bar).
-> 3.  Enable **Developer Mode** (top right).
-> 4.  Click **Load unpacked**.
-> 5.  Select the `/app` directory containing:
->
-> - `manifest.json` (este es el manifiesto para Chrome, **no funcionará en Firefox**)
-> - `app.js`
-> - `ShortsRemover.js`
->   Open YouTube on a new Tab
->   The extension will be loaded into Chrome immediately.
+_Unpacked Extension (save it in your pc)_:
+1.  Open Google Chrome.
+2.  Go to `chrome://extensions/` (digit it on the url bar).
+3.  Enable **Developer Mode** (top right).
+4.  Click **Load unpacked**.
+5.  Select the `/app` directory containing:
+    - `manifest.json` (este es el manifiesto para Chrome, **no funcionará en Firefox**)
+    - `app.js`
+    - `ShortsRemover.js`
+  Open YouTube on a new Tab
+  The extension will be loaded into Chrome immediately.
 
 ## Installation (Mozilla Firefox)
 
-> _Unpacked Extension (save it in your pc)_:
->
-> 1.  Create your .zip package
->     - Clone the `app/` directory and copy the right manifest into it:
->       - zsh: `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`
->       - powershell: `cp -R .\app\ && cp .\manifests\manifest.firefox.json .\firefox_app\manifest.json`
->     - Create a zip from it:
->       - zsh: `zip -r firefox_app.zip firefox_app/`
->       - Powershell: `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal`
-> 1.  Open Firefox.
-> 1.  Go to `about:addons` in the address bar.
-> 1.  Click The **Tools/Settings Icon** on top right.
-> 1.  Select Install Add-on From File.
-> 1.  Choose the zip file created.
-> 1.  Be sure to copy the correct file
-> 1.  Activate the plugin in the browser if is not active.
-> 1.  Ready, go to youtube to not see anymore shorts references.
+_Unpacked Extension (save it in your pc)_:
+1.  Create your .zip package:  
+  - Clone the `app/` directory and copy the right manifest into it:
+    - [__zsh__]  
+    `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`  
+
+    - [__powershell__]   
+     `Copy-Item -Path .\app\* -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
+  - Create a zip from it:
+    - [__zsh__]  
+    `zip -r firefox_app.zip firefox_app/`
+    - [__Powershell__]  
+     `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal`
+2.  Open Firefox.
+3.  Go to `about:debugging#/runtime/this-firefox` in the address bar.
+4.  Click __Load Temporary Add-on__ on top right.
+5.  Choose the zip file created.
+6.  Be sure to copy the correct file
+7.  Activate the plugin in the browser if is not active.
+8.  Ready, go to youtube to not see anymore shorts references.
 
 ---
 
