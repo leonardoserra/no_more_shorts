@@ -31,6 +31,7 @@ Total removed in this session: 69
 ## Installation (chrome)
 
 _From the Chrome Web Store_:
+
 1.  Go to the [Extension Page](https://chromewebstore.google.com/detail/no-more-shorts/baijfpbfmfpllklnfjddmajnojkpdkga)
 2.  Press the install button.
 3.  Open YouTube on a new Tab.
@@ -39,6 +40,7 @@ _From the Chrome Web Store_:
 OR
 
 _Unpacked Extension (save it in your pc)_:
+
 1.  Open Google Chrome.
 2.  Go to `chrome://extensions/` (digit it on the url bar).
 3.  Enable **Developer Mode** (top right).
@@ -47,27 +49,31 @@ _Unpacked Extension (save it in your pc)_:
     - `manifest.json` (este es el manifiesto para Chrome, **no funcionará en Firefox**)
     - `app.js`
     - `ShortsRemover.js`
-  Open YouTube on a new Tab
-  The extension will be loaded into Chrome immediately.
+      Open YouTube on a new Tab
+      The extension will be loaded into Chrome immediately.
 
 ## Installation (Mozilla Firefox)
 
 _Unpacked Extension (save it in your pc)_:
-1.  Create your .zip package:  
-  - Clone the `app/` directory and copy the right manifest into it:
-    - [__zsh__]  
-    `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`  
 
-    - [__powershell__]   
-     `Copy-Item -Path .\app\* -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
-  - Create a zip from it:
-    - [__zsh__]  
+1.  Create your .zip package:
+
+- Clone the `app/` directory and copy the right manifest into it:
+  - [__zsh__]  
+    `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`
+
+  - [__powershell__]  
+    `Copy-Item -Path .\app\* -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
+
+- Create a zip from it:
+  - [__zsh__]  
     `zip -r firefox_app.zip firefox_app/`
-    - [__Powershell__]  
-     `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal`
+  - [__Powershell__]  
+    `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal`
+
 2.  Open Firefox.
 3.  Go to `about:debugging#/runtime/this-firefox` in the address bar.
-4.  Click __Load Temporary Add-on__ on top right.
+4.  Click **Load Temporary Add-on** on top right.
 5.  Choose the zip file created.
 6.  Be sure to copy the correct file
 7.  Activate the plugin in the browser if is not active.
