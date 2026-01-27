@@ -28,7 +28,7 @@ Total removed in this session: 69
 
 ---
 
-## Installation
+## Installation (chrome)
 
 > _From the Chrome Web Store_:
 >
@@ -53,21 +53,34 @@ OR
 >   Open YouTube on a new Tab
 >   The extension will be loaded into Chrome immediately.
 
+## Installation (Mozilla Firefox)
+
+> _Unpacked Extension (save it in your pc)_:
+>
+> 1.  Create your .zip package
+>     - Clone the `app/` directory and copy the right manifest into it:
+>       - zsh: `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`
+>       - powershell: `cp -R .\app\ && cp .\manifests\manifest.firefox.json .\firefox_app\manifest.json`
+>     - Create a zip from it:
+>       - zsh: `zip -r firefox_app.zip firefox_app/`
+>       - Powershell: `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal`
+> 1.  Open Firefox.
+> 1.  Go to `about:addons` in the address bar.
+> 1.  Click The **Tools/Settings Icon** on top right.
+> 1.  Select Install Add-on From File.
+> 1.  Choose the zip file created.
+> 1.  Be sure to copy the correct file
+> 1.  Activate the plugin in the browser if is not active.
+> 1.  Ready, go to youtube to not see anymore shorts references.
+
 ---
 
-### Installation in firefox (unpacked) 
+## Pull Requests and Collaborations
 
-> 1.  Open Firefox.
-> 2.  Go to `about:debugging#/runtime/this-firefox` in the address bar.
-> 3.  Click **Load Temporary Add-on**.
-> 4.  Select the `manifest.json` file inside the `/app` folder.
->     **Important:** The default manifest in `/app` is for Chrome only. For Firefox, you must replace the `manifest.json` in `/app` with the Firefox-specific manifest.
-> 5.  Manifests for other browsers are located in the `/manifests` folder, following the naming convention `manifest.<browser>.json` (e.g., `manifest.firefox.json`).
-> 6.  To use the Firefox manifest:
->     - Copy the `manifest.firefox.json` file from `/manifests` to the `/app` folder and rename it to `manifest.json` (remove the `.firefox` part from the name).
->     - If you load the manifest with the name `manifest.firefox.json`, Firefox will show an error. **It must always be named `manifest.json` inside `/app`**.
-> 7.  Once this is done, select the new `manifest.json` from `/app` to load the extension.
+In order to collaborate to this open source project, just create a new branch from the `develop` branch, then submit your pull request.
 
+A standart prettier execution is mandatory to have always the same style across the project.
+run `npx prettier --write . --ignore-path .prettierignore` on the root project to fix the format before pushing.
 
 ---
 
@@ -76,6 +89,7 @@ OR
 To use the extension in other browsers, you must replace the manifest found in the `/app` folder with the one corresponding to your browser. These manifests are located in the `/manifests` folder and follow the naming rule `manifest.<browser>.json`.
 
 **Important:**
+
 - When moving the manifest, remove the `<browser>` part from the name, leaving it as `manifest.json` inside `/app`.
 - If you load the manifest with the browser name in the middle (e.g., `manifest.firefox.json`), the browser will show an error and will not load the extension.
 
@@ -90,12 +104,3 @@ No configuration is required. The extension activates automatically on any `yout
 ## License
 
 This project is open-source and free to use or modify. No affiliation with Google or YouTube.
-
----
-
-## Pull Requests and Collaborations
-
-In order to collaborate to this open source project, just create a new branch from the `develop` branch, then submit your pull request.
-
-A standart prettier execution is mandatory to have always the same style across the project.
-run `npx prettier --write . --ignore-path .prettierignore` on the root project to fix the format.
