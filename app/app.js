@@ -23,8 +23,10 @@
 
 (async () => {
   if (window.location.host.includes("youtube.com")) {
+    const client = globalThis.browser ?? globalThis.chrome;
+
     const { ShortsRemover } = await import(
-      chrome.runtime.getURL("./ShortsRemover.js")
+      client.runtime.getURL("./ShortsRemover.js")
     );
 
     if (ShortsRemover.started) return;

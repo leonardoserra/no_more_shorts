@@ -47,11 +47,37 @@ OR
 > 4.  Click **Load unpacked**.
 > 5.  Select the `/app` directory containing:
 >
-> - `manifest.json`
+> - `manifest.json` (este es el manifiesto para Chrome, **no funcionará en Firefox**)
 > - `app.js`
 > - `ShortsRemover.js`
 >   Open YouTube on a new Tab
 >   The extension will be loaded into Chrome immediately.
+
+---
+
+### Installation in firefox (unpacked) 
+
+> 1.  Open Firefox.
+> 2.  Go to `about:debugging#/runtime/this-firefox` in the address bar.
+> 3.  Click **Load Temporary Add-on**.
+> 4.  Select the `manifest.json` file inside the `/app` folder.
+>     **Important:** The default manifest in `/app` is for Chrome only. For Firefox, you must replace the `manifest.json` in `/app` with the Firefox-specific manifest.
+> 5.  Manifests for other browsers are located in the `/manifests` folder, following the naming convention `manifest.<browser>.json` (e.g., `manifest.firefox.json`).
+> 6.  To use the Firefox manifest:
+>     - Copy the `manifest.firefox.json` file from `/manifests` to the `/app` folder and rename it to `manifest.json` (remove the `.firefox` part from the name).
+>     - If you load the manifest with the name `manifest.firefox.json`, Firefox will show an error. **It must always be named `manifest.json` inside `/app`**.
+> 7.  Once this is done, select the new `manifest.json` from `/app` to load the extension.
+
+
+---
+
+### Using manifests for other browsers
+
+To use the extension in other browsers, you must replace the manifest found in the `/app` folder with the one corresponding to your browser. These manifests are located in the `/manifests` folder and follow the naming rule `manifest.<browser>.json`.
+
+**Important:**
+- When moving the manifest, remove the `<browser>` part from the name, leaving it as `manifest.json` inside `/app`.
+- If you load the manifest with the browser name in the middle (e.g., `manifest.firefox.json`), the browser will show an error and will not load the extension.
 
 ---
 
