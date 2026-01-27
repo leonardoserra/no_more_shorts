@@ -33,7 +33,10 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "nomoreshorts@multibrowser",
-      "strict_min_version": "109.9"
+      "strict_min_version": "148.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }
