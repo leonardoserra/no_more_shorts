@@ -84,8 +84,13 @@ _Unpacked Extension (save it in your pc)_:
 
 In order to collaborate to this open source project, just create a new branch from the `develop` branch, then submit your pull request.
 
-A standart prettier execution is mandatory to have always the same style across the project.
-run `npx prettier --write . --ignore-path .prettierignore` on the root project to fix the format before pushing.
+A standard prettier execution is mandatory to have always the same style across the project.
+
+Be sure to have `node` installed on your machine then run:
+
+- `npx prettier --write . --ignore-path .prettierignore`
+
+on the root dir to fix the format before pushing.
 
 ---
 
