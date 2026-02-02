@@ -82,7 +82,7 @@ _Unpacked Extension (save it in your pc)_:
 
 ## Pull Requests and Collaborations
 
-In order to collaborate to this open source project, just create a new branch from the `develop` branch, then submit your pull request.
+In order to collaborate to this open source project, just create a new branch from the `main` branch, then submit your pull request.
 
 A standard prettier execution is mandatory to have always the same style across the project.
 
