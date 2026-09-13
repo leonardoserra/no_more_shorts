@@ -3,3 +3,4 @@
 *.zip
 .vscode
 firefox_app/
+node_modules/

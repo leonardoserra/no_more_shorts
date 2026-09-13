@@ -1,0 +1,28 @@
+{
+  "name": "no_more_shorts",
+  "version": "1.4.4",
+  "description": "Hides Youtube Shorts automatically",
+  "keywords": [
+    "utility"
+  ],
+  "homepage": "https://github.com/leonardoserra/no_more_shorts#readme",
+  "bugs": {
+    "url": "https://github.com/leonardoserra/no_more_shorts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardoserra/no_more_shorts.git"
+  },
+  "license": "MIT",
+  "author": "Leonardo Serra",
+  "type":"module",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0"
+  }
+}

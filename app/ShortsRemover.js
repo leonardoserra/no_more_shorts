@@ -194,12 +194,12 @@ export class ShortsRemover {
   }
 
   get forYouContainer() {
-    if (this.forYouSingleShortElements.length === 0) return;
+    if (this.forYouSingleShortElements.length === 0) return undefined;
     return this.forYouSingleShortElements[0].closest(this.selectors.scrollOuterContainer);
   }
 
   get forYouScrollContainerNextButton() {
-    if (!this.forYouContainer) return;
+    if (!this.forYouContainer) return undefined;
     return this.forYouContainer.nextElementSibling
   }
 
@@ -347,12 +347,13 @@ export class ShortsRemover {
   }
 
   startObserving() {
-    const debouncedCallback = this.debounce((mutationList, observer) => {
+    // arguments taken by the debounce if needed. (mutationList, observer)
+    const debouncedCallback = this.debounce(() => {
       // TODO: Missing the container handling to render the nowmal videos in it.
       // while(!!this.forYouScrollContainerNextButton)
       //   this.clickHTMLElement(this.forYouScrollContainerNextButton);
-      // if(!!this.forYouScrollContainerNextButton)
-      //   this.clickHTMLElement(this.forYouScrollContainerNextButton)
+      if(this.forYouScrollContainerNextButton)
+        this.clickHTMLElement(this.forYouScrollContainerNextButton)
 
       this.removeShortsFromPage();
       this.hideElements(this.channelShortsChipElement);
