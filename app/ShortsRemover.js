@@ -242,7 +242,7 @@ export class ShortsRemover {
     const divider = "\n--------------------------------------\n";
     let message = `${this.removedCounter}`;
 
-    if (this.removedCounter > 1000) message += " (That's A LOT!)";
+    if (this.removedCounter > 100) message += " (That's A LOT!)";
 
     console.info(
       `${divider}Shorts removed for your focus!\nTotal removed in this session: ${message}${divider}`
