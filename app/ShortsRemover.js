@@ -44,7 +44,7 @@ export class ShortsRemover {
       "ytm-shorts-lockup-view-model, ytd-reel-video-renderer",
     forYouSingleShortItem: "ytm-shorts-lockup-view-model-v2",
     scrollOuterContainer: "#scroll-outer-container",
-    shortSrc: "[src^='/shorts/'], [src*='/shorts/']"
+    shortSrc: "[src^='/shorts/'], [src*='/shorts/']",
   };
 
   redirecting = false;
@@ -123,14 +123,15 @@ export class ShortsRemover {
 
   get chipsCollection() {
     const chipsCollection = [];
-    this.elementsBySelectors(this.selectors.navbarChipContainer)
-      .forEach((chip) => {
+    this.elementsBySelectors(this.selectors.navbarChipContainer).forEach(
+      (chip) => {
         if (chip.innerText.toLowerCase() == "shorts") {
           chipsCollection.push(
             chip.closest(this.selectors.innerNavbarChipContainer)
           );
         }
-      });
+      }
+    );
 
     return chipsCollection;
   }
@@ -138,15 +139,16 @@ export class ShortsRemover {
   get chameleonShortsCollection() {
     const chameleonShorts = [];
 
-    this.elementsBySelectors(this.selectors.chameleonShortsChildren)
-      .forEach((el) => {
+    this.elementsBySelectors(this.selectors.chameleonShortsChildren).forEach(
+      (el) => {
         const chameleonShort = el.closest(
           this.selectors.chameleonShortsContainer
         );
         if (chameleonShort) {
           chameleonShorts.push(chameleonShort);
         }
-      });
+      }
+    );
 
     return chameleonShorts;
   }
@@ -154,15 +156,16 @@ export class ShortsRemover {
   get notificationShortItems() {
     const notificationShortItems = [];
 
-    this.elementsBySelectors(this.selectors.notificationShortItem)
-      .forEach((el) => {
+    this.elementsBySelectors(this.selectors.notificationShortItem).forEach(
+      (el) => {
         const notificationShortItem = el.closest(
           this.selectors.notificationShortContainer
         );
         if (notificationShortItem) {
           notificationShortItems.push(notificationShortItem);
         }
-      });
+      }
+    );
 
     return notificationShortItems;
   }
@@ -179,9 +182,7 @@ export class ShortsRemover {
     ];
 
     if (!this.isHistoryPage())
-      basicBlocksSelectors.push(
-        this.selectors.suggestedShortsCarousel
-      );
+      basicBlocksSelectors.push(this.selectors.suggestedShortsCarousel);
 
     const basicBlocksCollection =
       this.elementsBySelectors(basicBlocksSelectors);
@@ -195,12 +196,14 @@ export class ShortsRemover {
 
   get forYouContainer() {
     if (this.forYouSingleShortElements.length === 0) return undefined;
-    return this.forYouSingleShortElements[0].closest(this.selectors.scrollOuterContainer);
+    return this.forYouSingleShortElements[0].closest(
+      this.selectors.scrollOuterContainer
+    );
   }
 
   get forYouScrollContainerNextButton() {
     if (!this.forYouContainer) return undefined;
-    return this.forYouContainer.nextElementSibling
+    return this.forYouContainer.nextElementSibling;
   }
 
   get shortElementsBySrc() {
@@ -297,8 +300,8 @@ export class ShortsRemover {
 
   shortsToRemoveCount(...others) {
     return (
-      this.elementsBySelectors(this.selectors.singleShortSelector)
-        .length + others.length
+      this.elementsBySelectors(this.selectors.singleShortSelector).length +
+      others.length
     );
   }
 
@@ -342,8 +345,7 @@ export class ShortsRemover {
   }
 
   clickHTMLElement(el) {
-    if (!!el && el instanceof HTMLDivElement && !!el.click)
-      el.click();
+    if (!!el && el instanceof HTMLDivElement && !!el.click) el.click();
   }
 
   startObserving() {
@@ -352,8 +354,8 @@ export class ShortsRemover {
       // TODO: Missing the container handling to render the nowmal videos in it.
       // while(!!this.forYouScrollContainerNextButton)
       //   this.clickHTMLElement(this.forYouScrollContainerNextButton);
-      if(this.forYouScrollContainerNextButton)
-        this.clickHTMLElement(this.forYouScrollContainerNextButton)
+      if (this.forYouScrollContainerNextButton)
+        this.clickHTMLElement(this.forYouScrollContainerNextButton);
 
       this.removeShortsFromPage();
       this.hideElements(this.channelShortsChipElement);
