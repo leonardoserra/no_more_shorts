@@ -42,6 +42,9 @@ export class ShortsRemover {
     innerNavbarChipContainer: "yt-chip-cloud-chip-renderer",
     singleShortSelector:
       "ytm-shorts-lockup-view-model, ytd-reel-video-renderer",
+    forYouSingleShortItem: "ytm-shorts-lockup-view-model-v2",
+    scrollOuterContainer: "#scroll-outer-container",
+    shortSrc: "[src^='/shorts/'], [src*='/shorts/']"
   };
 
   redirecting = false;
@@ -68,33 +71,49 @@ export class ShortsRemover {
   }
 
   isYouTube() {
-    return this.document.location.host.includes("youtube.com");
+    return this.host.includes("youtube.com");
   }
 
   isShortsPage() {
-    return this.document.location.pathname.startsWith("/shorts");
+    return this.pathname.startsWith("/shorts");
   }
 
   isHistoryPage() {
-    return this.document.location.pathname.includes("/feed/history");
+    return this.pathname.includes("/feed/history");
   }
 
   isChannelShortsPage() {
-    return this.document.location.pathname.endsWith("/shorts");
+    return this.pathname.endsWith("/shorts");
   }
 
   isForbiddenPage() {
     return this.isShortsPage() || this.isChannelShortsPage();
   }
 
+  get selectors() {
+    return ShortsRemover.selectors;
+  }
+
+  get documentLocation() {
+    return this.document.location;
+  }
+
+  get host() {
+    return this.documentLocation.host;
+  }
+
+  get pathname() {
+    return this.documentLocation.pathname;
+  }
+
   get shortsSidebarElements() {
     const shortsSidebarElements = [];
-    const entries = this.document.querySelectorAll(
-      ShortsRemover.selectors.shortSidebarElements
+    const entries = this.elementsBySelectors(
+      this.selectors.shortSidebarElements
     );
 
     entries.forEach((entry) => {
-      if (entry.querySelector(ShortsRemover.selectors.anchorWithShortsTitle)) {
+      if (entry.querySelector(this.selectors.anchorWithShortsTitle)) {
         shortsSidebarElements.push(entry);
       }
     });
@@ -104,12 +123,11 @@ export class ShortsRemover {
 
   get chipsCollection() {
     const chipsCollection = [];
-    this.document
-      .querySelectorAll(ShortsRemover.selectors.navbarChipContainer)
+    this.elementsBySelectors(this.selectors.navbarChipContainer)
       .forEach((chip) => {
         if (chip.innerText.toLowerCase() == "shorts") {
           chipsCollection.push(
-            chip.closest(ShortsRemover.selectors.innerNavbarChipContainer)
+            chip.closest(this.selectors.innerNavbarChipContainer)
           );
         }
       });
@@ -120,11 +138,10 @@ export class ShortsRemover {
   get chameleonShortsCollection() {
     const chameleonShorts = [];
 
-    this.document
-      .querySelectorAll(ShortsRemover.selectors.chameleonShortsChildren)
+    this.elementsBySelectors(this.selectors.chameleonShortsChildren)
       .forEach((el) => {
         const chameleonShort = el.closest(
-          ShortsRemover.selectors.chameleonShortsContainer
+          this.selectors.chameleonShortsContainer
         );
         if (chameleonShort) {
           chameleonShorts.push(chameleonShort);
@@ -137,11 +154,10 @@ export class ShortsRemover {
   get notificationShortItems() {
     const notificationShortItems = [];
 
-    this.document
-      .querySelectorAll(ShortsRemover.selectors.notificationShortItem)
+    this.elementsBySelectors(this.selectors.notificationShortItem)
       .forEach((el) => {
         const notificationShortItem = el.closest(
-          ShortsRemover.selectors.notificationShortContainer
+          this.selectors.notificationShortContainer
         );
         if (notificationShortItem) {
           notificationShortItems.push(notificationShortItem);
@@ -152,25 +168,43 @@ export class ShortsRemover {
   }
 
   get channelShortsChipElement() {
-    return this.elementsBySelectors(ShortsRemover.selectors.channelShortsChip);
+    return this.elementsBySelectors(this.selectors.channelShortsChip);
   }
 
   get basicBlocksToRemoveCollection() {
     const basicBlocksSelectors = [
-      ShortsRemover.selectors.homePageShortContainer,
-      ShortsRemover.selectors.shortsContainer,
-      ShortsRemover.selectors.resultsPageShortsContainer,
+      this.selectors.homePageShortContainer,
+      this.selectors.shortsContainer,
+      this.selectors.resultsPageShortsContainer,
     ];
 
     if (!this.isHistoryPage())
       basicBlocksSelectors.push(
-        ShortsRemover.selectors.suggestedShortsCarousel
+        this.selectors.suggestedShortsCarousel
       );
 
     const basicBlocksCollection =
       this.elementsBySelectors(basicBlocksSelectors);
 
     return basicBlocksCollection;
+  }
+
+  get forYouSingleShortElements() {
+    return this.elementsBySelectors(this.selectors.forYouSingleShortItem);
+  }
+
+  get forYouContainer() {
+    if (this.forYouSingleShortElements.length === 0) return;
+    return this.forYouSingleShortElements[0].closest(this.selectors.scrollOuterContainer);
+  }
+
+  get forYouScrollContainerNextButton() {
+    if (!this.forYouContainer) return;
+    return this.forYouContainer.nextElementSibling
+  }
+
+  get shortElementsBySrc() {
+    return this.elementsBySelectors(this.selectors.shortSrc);
   }
 
   get elementsToRemoveCollections() {
@@ -182,6 +216,8 @@ export class ShortsRemover {
       shortsChipElement: this.chipsCollection,
       shortsSidebarElements: this.shortsSidebarElements,
       notificationShortItems: this.notificationShortItems,
+      forYouSingleShortElements: this.forYouSingleShortElements,
+      shortElementsBySrc: this.shortElementsBySrc,
     };
   }
 
@@ -225,8 +261,7 @@ export class ShortsRemover {
   }
 
   toChannelSectionLocation() {
-    const path = this.document.location.pathname;
-    const url = path.replace("/shorts", "");
+    const url = this.pathname.replace("/shorts", "");
 
     this.window.location.replace(url);
   }
@@ -262,7 +297,7 @@ export class ShortsRemover {
 
   shortsToRemoveCount(...others) {
     return (
-      this.elementsBySelectors(ShortsRemover.selectors.singleShortSelector)
+      this.elementsBySelectors(this.selectors.singleShortSelector)
         .length + others.length
     );
   }
@@ -271,7 +306,7 @@ export class ShortsRemover {
     const rules = ["margin", "padding", "min-width"];
     const zeroValue = "0px";
 
-    if (element?.constructor?.name === "HTMLElement") {
+    if (element instanceof HTMLElement) {
       element.childNodes?.forEach((child) => child?.remove());
 
       rules.forEach((rule) => {
@@ -306,8 +341,19 @@ export class ShortsRemover {
     }
   }
 
+  clickHTMLElement(el) {
+    if (!!el && el instanceof HTMLDivElement && !!el.click)
+      el.click();
+  }
+
   startObserving() {
     const debouncedCallback = this.debounce((mutationList, observer) => {
+      // TODO: Missing the container handling to render the nowmal videos in it.
+      // while(!!this.forYouScrollContainerNextButton)
+      //   this.clickHTMLElement(this.forYouScrollContainerNextButton);
+      // if(!!this.forYouScrollContainerNextButton)
+      //   this.clickHTMLElement(this.forYouScrollContainerNextButton)
+
       this.removeShortsFromPage();
       this.hideElements(this.channelShortsChipElement);
     }, 300);
