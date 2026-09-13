@@ -351,11 +351,14 @@ export class ShortsRemover {
   startObserving() {
     // arguments taken by the debounce if needed. (mutationList, observer)
     const debouncedCallback = this.debounce(() => {
-      // TODO: Missing the container handling to render the nowmal videos in it.
-      // while(!!this.forYouScrollContainerNextButton)
+      // TODO: Missing the container handling to render the normal videos in it.
+      // When shorts are the biggest part in the "For You" section
+      // the container breaks because it is emptied and navigating
+      // with the arrows don't work anymore
+      // Still not found a way to make it work.
+      //
+      // if (this.forYouScrollContainerNextButton)
       //   this.clickHTMLElement(this.forYouScrollContainerNextButton);
-      if (this.forYouScrollContainerNextButton)
-        this.clickHTMLElement(this.forYouScrollContainerNextButton);
 
       this.removeShortsFromPage();
       this.hideElements(this.channelShortsChipElement);
