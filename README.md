@@ -58,16 +58,16 @@ _Unpacked Extension (save it in your pc)_:
 1.  Create your .zip package:
 
 - Clone the `app/` directory and copy the right manifest into it:
-  - [__zsh__]  
+  - [**zsh**]  
     `cp -r app firefox_app && cp manifests/manifest.firefox.json firefox_app/manifest.json`
 
-  - [__powershell__]  
+  - [**powershell**]  
     `Copy-Item -Path .\app\ -Destination .\firefox_app\ -Recurse -Force && Copy-Item -Path .\manifests\manifest.firefox.json -Destination .\firefox_app\manifest.json -Force;`
 
 - Create a zip from it:
-  - [__zsh__]  
+  - [**zsh**]  
     `zip -r firefox_app.zip firefox_app/`
-  - [__Powershell__]  
+  - [**Powershell**]  
     `Compress-Archive -Path .\firefox_app\* -DestinationPath firefox_app.zip -CompressionLevel Optimal -Force;`
 
 2.  Open Firefox.
