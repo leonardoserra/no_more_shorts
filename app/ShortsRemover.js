@@ -352,7 +352,7 @@ export class ShortsRemover {
   resizeForYouContainer() {
     if (this.forYouContainer) {
       this.forYouContainer.style.width = 0;
-      this.forYouContainer.style.width = "";
+      this.forYouContainer.style.width = "100%";
     }
   }
 
