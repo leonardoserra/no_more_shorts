@@ -43,12 +43,13 @@ export class ShortsRemover {
     singleShortSelector:
       "ytm-shorts-lockup-view-model, ytd-reel-video-renderer",
     forYouSingleShortItem: "ytm-shorts-lockup-view-model-v2",
-    scrollOuterContainer: "#scroll-outer-container",
-    shortSrc: "[src^='/shorts/'], [src*='/shorts/']",
+    forYouContainer: "#scroll-container.yt-horizontal-list-renderer",
+    shortByHREF: "[href^='/shorts/'], [href*='/shorts/']",
   };
 
   redirecting = false;
   removedCounter = 0;
+  forYouContainer = null;
 
   constructor(window) {
     this.window = window;
@@ -194,20 +195,20 @@ export class ShortsRemover {
     return this.elementsBySelectors(this.selectors.forYouSingleShortItem);
   }
 
-  get forYouContainer() {
-    if (this.forYouSingleShortElements.length === 0) return undefined;
-    return this.forYouSingleShortElements[0].closest(
-      this.selectors.scrollOuterContainer
+  get isForYouContainerClean() {
+    return this.forYouSingleShortElements.length === 0;
+  }
+
+  initForYouContainer() {
+    if (this.isForYouContainerClean) return;
+
+    this.forYouContainer = this.forYouSingleShortElements[0].closest(
+      this.selectors.forYouContainer
     );
   }
 
-  get forYouScrollContainerNextButton() {
-    if (!this.forYouContainer) return undefined;
-    return this.forYouContainer.nextElementSibling;
-  }
-
   get shortElementsBySrc() {
-    return this.elementsBySelectors(this.selectors.shortSrc);
+    return this.elementsBySelectors(this.selectors.shortByHREF);
   }
 
   get elementsToRemoveCollections() {
@@ -348,19 +349,18 @@ export class ShortsRemover {
     if (!!el && el instanceof HTMLDivElement && !!el.click) el.click();
   }
 
-  startObserving() {
-    // arguments taken by the debounce if needed. (mutationList, observer)
-    const debouncedCallback = this.debounce(() => {
-      // TODO: Missing the container handling to render the normal videos in it.
-      // When shorts are the biggest part in the "For You" section
-      // the container breaks because it is emptied and navigating
-      // with the arrows don't work anymore
-      // Still not found a way to make it work.
-      //
-      // if (this.forYouScrollContainerNextButton)
-      //   this.clickHTMLElement(this.forYouScrollContainerNextButton);
+  resizeForYouContainer() {
+    if (this.forYouContainer) {
+      this.forYouContainer.style.width = 0;
+      this.forYouContainer.style.width = "";
+    }
+  }
 
+  startObserving() {
+    const debouncedCallback = this.debounce(() => {
+      this.initForYouContainer();
       this.removeShortsFromPage();
+      this.resizeForYouContainer();
       this.hideElements(this.channelShortsChipElement);
     }, 300);
 
